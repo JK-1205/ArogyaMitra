@@ -5,6 +5,8 @@ import Header from "@/components/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Toaster } from "@/components/ui/sonner";
+import Link from "next/link";
+import { Stethoscope } from "lucide-react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,10 +38,126 @@ export default function RootLayout({ children }) {
 
             <main className="min-h-screen ">{children}</main>
             <Toaster richColors />
+
             {/* footer */}
-            <footer className="bg-muted/50 py-12">
-              <div className="container mx-auto px-4 text-center text-gray-200">
-                <p>Made with 💗 by Jainil</p>
+            <footer className="bg-background border-t border-emerald-900/30">
+              <div className="max-w-7xl mx-auto px-6 py-14">
+                <div className="grid gap-12 md:grid-cols-4">
+                  {/* Brand */}
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <Stethoscope className="h-5 w-5 text-emerald-400" />
+                      <h2 className="text-xl font-bold text-white">
+                        ArogyaMitra
+                      </h2>
+                    </div>
+                    <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+                      ArogyaMitra helps you connect with doctors, book
+                      consultations, and manage your healthcare journey securely
+                      from anywhere.
+                    </p>
+                  </div>
+
+                  {/* Platform */}
+                  <div>
+                    <h3 className="text-sm font-semibold uppercase tracking-wide text-white">
+                      Platform
+                    </h3>
+                    <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+                      <li>
+                        <Link
+                          href="/"
+                          className="hover:text-emerald-400 transition"
+                        >
+                          Home
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href="/doctors"
+                          className="hover:text-emerald-400 transition"
+                        >
+                          Find Doctors
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href="/onboarding"
+                          className="hover:text-emerald-400 transition"
+                        >
+                          Get Started
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href="#pricing"
+                          className="hover:text-emerald-400 transition"
+                        >
+                          Pricing
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Trust & Legal */}
+                  <div>
+                    <h3 className="text-sm font-semibold uppercase tracking-wide text-white">
+                      Trust & Safety
+                    </h3>
+                    <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+                      <li>
+                        <Link
+                          href="/privacy-policy"
+                          className="hover:text-emerald-400 transition"
+                        >
+                          Privacy Policy
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href="/"
+                          className="hover:text-emerald-400 transition"
+                        >
+                          Terms & Conditions
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href="/"
+                          className="hover:text-emerald-400 transition"
+                        >
+                          Medical Disclaimer
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Support */}
+                  <div>
+                    <h3 className="text-sm font-semibold uppercase tracking-wide text-white">
+                      Support
+                    </h3>
+                    <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+                      <li>support@arogyamitra.app</li>
+                      <li>
+                        <Link
+                          href="/"
+                          className="hover:text-emerald-400 transition"
+                        >
+                          Help & FAQ
+                        </Link>
+                      </li>
+                      <li className="pt-2 text-xs text-muted-foreground/80">
+                        AI-powered assistance • Secure by design
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Bottom */}
+                <div className="mt-14 border-t border-emerald-900/20 pt-6 text-center text-sm text-muted-foreground">
+                  © {new Date().getFullYear()} ArogyaMitra. All rights reserved.
+                </div>
               </div>
             </footer>
           </ThemeProvider>
