@@ -23,6 +23,7 @@
     "@radix-ui/react-tabs": "^1.1.13",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.2",
+    "@vapi-ai/web": "^2.5.2",
     "@vonage/auth": "^1.13.1",
     "@vonage/server-sdk": "^3.25.1",
     "class-variance-authority": "^0.7.1",
@@ -44,6 +45,9 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.182.0",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.10",

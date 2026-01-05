@@ -93,6 +93,20 @@ export default async function Header() {
                     <Calendar className="h-4 w-4" />
                   </Button>
                 </Link>
+
+                {/* ADD THIS - Voice Assistant Link */}
+                <Link href="/voice-assistant">
+                  <Button
+                    variant="outline"
+                    className="hidden md:flex items-center gap-2"
+                  >
+                    <Phone className="h-4 w-4 text-emerald-400" />
+                    Voice Assistant
+                  </Button>
+                  <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
+                    <Phone className="h-4 w-4" />
+                  </Button>
+                </Link>
               </>
             )}
 

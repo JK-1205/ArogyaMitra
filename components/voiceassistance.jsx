@@ -6,7 +6,6 @@ import {
   HeartHandshake,
   Brain,
   User,
-  Shield,
   Phone,
   PhoneOff,
   Loader2,
@@ -15,7 +14,10 @@ import {
 export default function HealthAssistantsDashboard() {
   const [callStates, setCallStates] = useState({});
   const [loadingStates, setLoadingStates] = useState({});
+  const [listeningStates, setListeningStates] = useState({});
   const [vapiInstances, setVapiInstances] = useState({});
+  const [vapiReady, setVapiReady] = useState(false);
+  const [initializationError, setInitializationError] = useState(null);
 
   const assistants = [
     {
@@ -23,18 +25,20 @@ export default function HealthAssistantsDashboard() {
       name: "OncoSathi",
       description:
         "Your caring voice companion for cancer support. Get guidance on symptoms, treatments, prevention tips, and emotional support whenever you need it.",
-      assistantId: "402a9beb-2160-4967-9bb2-a69e09ebadbc",
+      assistantId: "a27831b7-cf3d-405f-ae5e-f8857170997d",
       icon: Heart,
       gradient: "from-pink-400 via-rose-500 to-pink-600",
       borderColor: "border-pink-500/20 hover:border-pink-500/60",
       shadowColor: "hover:shadow-pink-500/25",
+      voiceGender: "Male",
+      languages: "🗣️ All Indian languages | सभी भारतीय भाषाएं",
       features: [
+        "12+ Indian languages",
         "Cancer types info",
         "Prevention tips",
         "Early symptoms",
-        "Mental support",
-        "Treatment options",
-        "Hospital locator",
+        "Emotional support",
+        "Treatment guidance",
       ],
     },
     {
@@ -42,17 +46,19 @@ export default function HealthAssistantsDashboard() {
       name: "SugarSaathi",
       description:
         "Your trusted diabetes companion for managing blood sugar levels, diet planning, and medication reminders with personalized Indian diet suggestions.",
-      assistantId: "38041083-834d-442a-8234-f32781348d61",
+      assistantId: "4f31084e-8ee5-49e8-835e-2148144c334d",
       icon: Droplets,
       gradient: "from-blue-400 via-cyan-500 to-blue-600",
       borderColor: "border-blue-500/20 hover:border-blue-500/60",
       shadowColor: "hover:shadow-blue-500/25",
+      voiceGender: "Male",
+      languages: "🗣️ All Indian languages | सभी भारतीय भाषाएं",
       features: [
+        "Multilingual support",
         "Diet plans",
         "Sugar level tips",
-        "Symptoms tracking",
         "Medication reminders",
-        "Indian diet suggestions",
+        "Indian diet focus",
         "Myths vs facts",
       ],
     },
@@ -61,18 +67,20 @@ export default function HealthAssistantsDashboard() {
       name: "HeartHelp",
       description:
         "Your heart health guardian providing guidance on recognizing heart attack signs, daily cardio tips, and blood pressure management support.",
-      assistantId: "1f4b0f37-32de-407b-ae7c-40ef2e47335c",
+      assistantId: "cf8cad67-7694-4aaa-886b-0bfa6f5674ff",
       icon: HeartHandshake,
       gradient: "from-red-400 via-rose-500 to-red-600",
       borderColor: "border-red-500/20 hover:border-red-500/60",
       shadowColor: "hover:shadow-red-500/25",
+      voiceGender: "Male",
+      languages: "🗣️ All Indian languages | सभी भारतीय भाषाएं",
       features: [
+        "Multilingual support",
         "Heart attack signs",
         "Daily cardio tips",
-        "Stress reduction",
         "Blood pressure help",
-        "Women's symptoms",
         "Emergency guidance",
+        "Women's symptoms",
       ],
     },
     {
@@ -80,18 +88,20 @@ export default function HealthAssistantsDashboard() {
       name: "MannSaathi",
       description:
         "Your mental wellness companion offering support for depression, anxiety, guided breathing techniques, and emotional well-being guidance.",
-      assistantId: "6850ff33-c9f6-4a6f-90a2-5742b94a96e6",
+      assistantId: "538d0d6b-c247-4b2d-8092-78eb1222c9e1",
       icon: Brain,
       gradient: "from-purple-400 via-violet-500 to-purple-600",
       borderColor: "border-purple-500/20 hover:border-purple-500/60",
       shadowColor: "hover:shadow-purple-500/25",
+      voiceGender: "Female",
+      languages: "🗣️ All Indian languages | सभी भारतीय भाषाएं",
       features: [
+        "Female voice",
         "Depression support",
         "Anxiety help",
-        "Therapy FAQs",
         "Breathing techniques",
-        "Emotional support",
-        "Crisis helpline info",
+        "24/7 support",
+        "Crisis helplines",
       ],
     },
     {
@@ -99,37 +109,41 @@ export default function HealthAssistantsDashboard() {
       name: "NariCare",
       description:
         "Your women's health companion providing privacy-focused guidance on periods, PCOS, pregnancy, menopause, and breastfeeding support.",
-      assistantId: "250fca16-36f3-4015-a205-66122cbd90bc",
+      assistantId: "4a796aaa-c3e8-4850-baf0-039e9ed082e9",
       icon: User,
       gradient: "from-emerald-400 via-teal-500 to-emerald-600",
       borderColor: "border-emerald-500/20 hover:border-emerald-500/60",
       shadowColor: "hover:shadow-emerald-500/25",
+      voiceGender: "Female",
+      languages: "🗣️ All Indian languages | सभी भारतीय भाषाएं",
       features: [
+        "Female voice",
         "Period tracking",
         "PCOS info",
         "Pregnancy FAQs",
-        "Menopause education",
         "Breastfeeding tips",
-        "Privacy focused",
+        "Complete privacy",
       ],
     },
     {
       id: "jeevansaathi",
       name: "JeevanSaathi",
       description:
-        "Your liver and kidney health specialist providing guidance on cirrhosis, hepatitis, dialysis support, and medical report explanations.",
-      assistantId: "8c63e967-e857-461d-9093-48d0f6418d2b",
-      icon: Shield,
-      gradient: "from-orange-400 via-amber-500 to-orange-600",
-      borderColor: "border-orange-500/20 hover:border-orange-500/60",
-      shadowColor: "hover:shadow-orange-500/25",
+        "Your trusted companion for relationship counseling, fertility support, and family planning. Complete privacy and confidentiality.",
+      assistantId: "60c20131-26b6-4990-8f4c-39b8d28b7a54",
+      icon: Heart,
+      gradient: "from-rose-400 via-pink-500 to-rose-600",
+      borderColor: "border-rose-500/20 hover:border-rose-500/60",
+      shadowColor: "hover:shadow-rose-500/25",
+      voiceGender: "Female",
+      languages: "🗣️ All Indian languages | सभी भारतीय भाषाएं",
       features: [
-        "Cirrhosis info",
-        "Hepatitis guidance",
-        "Dialysis support",
-        "Report explanations",
-        "SGPT/Creatinine",
-        "Symptom guidance",
+        "Relationship counseling",
+        "Fertility support",
+        "Couple's wellness",
+        "Family planning",
+        "Intimacy guidance",
+        "Complete privacy",
       ],
     },
   ];
@@ -137,68 +151,110 @@ export default function HealthAssistantsDashboard() {
   useEffect(() => {
     const initializeVapi = async () => {
       try {
+        // Check if API key is available
+        if (!process.env.NEXT_PUBLIC_VAPI_API_KEY) {
+          console.error("❌ VAPI_API_KEY is not set in environment variables");
+          setInitializationError(
+            "API key is missing. Please check your .env configuration."
+          );
+          return;
+        }
+
+        console.log("🔄 Initializing Vapi SDK...");
         const { default: Vapi } = await import("@vapi-ai/web");
         const instances = {};
 
         assistants.forEach((assistant) => {
-          const vapiInstance = new Vapi(process.env.NEXT_PUBLIC_VAPI_API_KEY);
+          try {
+            const vapiInstance = new Vapi(process.env.NEXT_PUBLIC_VAPI_API_KEY);
 
-          vapiInstance.on("call-start", () => {
-            console.log(`${assistant.name} Call Started`);
-            setCallStates((prev) => ({ ...prev, [assistant.id]: true }));
-            setLoadingStates((prev) => ({ ...prev, [assistant.id]: false }));
-          });
+            vapiInstance.on("call-start", () => {
+              console.log(`${assistant.name} Call Started`);
+              setCallStates((prev) => ({ ...prev, [assistant.id]: true }));
+              setLoadingStates((prev) => ({ ...prev, [assistant.id]: false }));
+            });
 
-          vapiInstance.on("call-end", () => {
-            console.log(`${assistant.name} Call Ended`);
-            setCallStates((prev) => ({ ...prev, [assistant.id]: false }));
-            setLoadingStates((prev) => ({ ...prev, [assistant.id]: false }));
-          });
+            vapiInstance.on("call-end", () => {
+              console.log(`${assistant.name} Call Ended`);
+              setCallStates((prev) => ({ ...prev, [assistant.id]: false }));
+              setLoadingStates((prev) => ({ ...prev, [assistant.id]: false }));
+              setListeningStates((prev) => ({
+                ...prev,
+                [assistant.id]: false,
+              }));
+            });
 
-          vapiInstance.on("speech-start", () => {
-            console.log(`${assistant.name} Assistant is speaking...`);
-          });
+            vapiInstance.on("speech-start", () => {
+              console.log(`${assistant.name} Assistant is speaking...`);
+              setListeningStates((prev) => ({
+                ...prev,
+                [assistant.id]: false,
+              }));
+            });
 
-          vapiInstance.on("speech-end", () => {
-            console.log(`${assistant.name} Assistant finished speaking.`);
-          });
-
-          vapiInstance.on("message", (msg) => {
-            // Handle transcripts
-            if (msg.type === "transcript") {
-              if (msg.transcriptType === "partial") {
-                console.log(`${assistant.name} Partial transcript:`, msg.text);
-              } else if (msg.transcriptType === "final") {
-                console.log(`${assistant.name} Final transcript:`, msg.text);
-              }
-            }
-
-            // Handle function calls
-            if (msg.type === "function-call") {
+            vapiInstance.on("speech-end", () => {
               console.log(
-                `${assistant.name} Function call:`,
-                msg.functionCall.name,
-                msg.functionCall.parameters
+                `${assistant.name} Assistant stopped - listening to you`
               );
-            }
-          });
+              setListeningStates((prev) => ({ ...prev, [assistant.id]: true }));
+            });
 
-          instances[assistant.id] = vapiInstance;
+            vapiInstance.on("message", (msg) => {
+              if (msg.type === "transcript") {
+                if (msg.transcriptType === "partial") {
+                  console.log(
+                    `${assistant.name} Partial transcript:`,
+                    msg.text
+                  );
+                } else if (msg.transcriptType === "final") {
+                  console.log(`${assistant.name} Final transcript:`, msg.text);
+                }
+              }
+
+              if (msg.type === "function-call") {
+                console.log(
+                  `${assistant.name} Function call:`,
+                  msg.functionCall.name,
+                  msg.functionCall.parameters
+                );
+              }
+            });
+
+            // Error handler for vapi instance
+            vapiInstance.on("error", (error) => {
+              console.error(`${assistant.name} Vapi error:`, error);
+            });
+
+            instances[assistant.id] = vapiInstance;
+          } catch (instanceError) {
+            console.error(
+              `Failed to initialize ${assistant.name}:`,
+              instanceError
+            );
+          }
         });
 
         setVapiInstances(instances);
+        setVapiReady(true);
+        console.log("✅ Vapi initialized successfully for all assistants");
       } catch (error) {
-        console.error("Failed to initialize Vapi:", error);
+        console.error("❌ Failed to initialize Vapi:", error);
+        setInitializationError(
+          error?.message || "Failed to initialize voice assistant service"
+        );
       }
     };
 
     initializeVapi();
 
-    // Cleanup on unmount
     return () => {
       Object.values(vapiInstances).forEach((vapi) => {
         if (vapi && typeof vapi.stop === "function") {
-          vapi.stop();
+          try {
+            vapi.stop();
+          } catch (e) {
+            console.warn("Error stopping vapi instance:", e);
+          }
         }
       });
     };
@@ -206,13 +262,134 @@ export default function HealthAssistantsDashboard() {
 
   const handleStartCall = async (assistantId, vapiAssistantId) => {
     const vapi = vapiInstances[assistantId];
-    if (!vapi || loadingStates[assistantId]) return;
+
+    console.log("🔍 Debug Info:", {
+      assistantId,
+      vapiAssistantId,
+      hasVapi: !!vapi,
+      isReady: vapiReady,
+      apiKey: process.env.NEXT_PUBLIC_VAPI_API_KEY ? "Set ✅" : "Missing ❌",
+    });
+
+    // Defensive checks - prevent the undefined error
+    if (!vapiReady) {
+      console.warn("⚠️ Vapi is still initializing...");
+      alert(
+        "Voice assistant is still initializing. Please wait a moment and try again."
+      );
+      return;
+    }
+
+    if (!vapi) {
+      console.warn("⚠️ Vapi instance not found for assistant:", assistantId);
+      alert("Voice assistant instance not found. Please refresh the page.");
+      return;
+    }
+
+    if (loadingStates[assistantId]) {
+      console.log("⚠️ Already processing a call for this assistant");
+      return;
+    }
+
+    if (!process.env.NEXT_PUBLIC_VAPI_API_KEY) {
+      alert(
+        "⚠️ Vapi API key is missing!\n\nPlease check your .env configuration."
+      );
+      return;
+    }
 
     setLoadingStates((prev) => ({ ...prev, [assistantId]: true }));
+
     try {
-      await vapi.start(vapiAssistantId);
+      console.log(`📞 Starting call with assistant: ${vapiAssistantId}`);
+
+      // Add timeout to prevent hanging on undefined errors
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(
+          () => reject(new Error("Call start timeout - assistant may be busy")),
+          30000
+        );
+      });
+
+      // Race between start call and timeout
+      const result = await Promise.race([
+        vapi.start(vapiAssistantId),
+        timeoutPromise,
+      ]);
+
+      console.log("✅ Call started successfully", result);
     } catch (error) {
-      console.error("Failed to start call:", error);
+      console.error("❌ Failed to start call:", error);
+
+      // Log full error details for debugging
+      console.error("Full error object:", {
+        message: error?.message,
+        name: error?.name,
+        code: error?.code,
+        stack: error?.stack,
+        response: error?.response,
+        data: error?.data,
+        cause: error?.cause,
+        // Handle undefined/null error case
+        isUndefined: error === undefined,
+        isNull: error === null,
+        errorType: typeof error,
+      });
+
+      let userMessage = "Failed to start call.\n\n";
+
+      // Handle undefined/null error specifically - this is the main issue reported
+      if (error === undefined || error === null) {
+        userMessage +=
+          "⚠️ Connection issue with Vapi service.\n\n" +
+          "This can happen if:\n" +
+          "• The assistant is still loading\n" +
+          "• Network connection is unstable\n\n" +
+          "Please try again in a few moments.";
+      } else if (!error || error?.message === undefined) {
+        userMessage +=
+          "⚠️ Assistant configuration may be incomplete.\n\nPlease check in Vapi dashboard:\n" +
+          "1. System prompt is set\n" +
+          "2. Voice is configured\n" +
+          "3. First message is added\n" +
+          "4. Model is set to gpt-4o";
+      } else if (
+        error?.message?.includes("ended") ||
+        error?.message?.includes("Meeting")
+      ) {
+        userMessage +=
+          "⚠️ Assistant configuration issue.\n\nPlease verify in Vapi dashboard:\n• System prompt is complete\n• Voice provider is set\n• First message exists";
+      } else if (
+        error?.message?.includes("Invalid API key") ||
+        error?.message?.includes("Unauthorized")
+      ) {
+        userMessage +=
+          "Your Vapi API key is invalid or expired.\n\nPlease check your .env file.";
+      } else if (
+        error?.message?.includes("Assistant not found") ||
+        error?.message?.includes("404")
+      ) {
+        userMessage += `Assistant ID not found: ${vapiAssistantId}\n\nPlease verify the ID in your Vapi dashboard.`;
+      } else if (
+        error?.message?.includes("permission") ||
+        error?.message?.includes("microphone")
+      ) {
+        userMessage +=
+          "Please allow microphone access in your browser.\n\nClick the 🎤 icon in your address bar.";
+      } else if (
+        error?.message?.includes("network") ||
+        error?.message?.includes("timeout")
+      ) {
+        userMessage +=
+          "Network connection issue.\n\nPlease check your internet connection.";
+      } else {
+        userMessage += `Error: ${
+          error?.message || "Unknown error"
+        }\n\nCheck console for details.`;
+      }
+
+      alert(userMessage);
+
       setLoadingStates((prev) => ({ ...prev, [assistantId]: false }));
     }
   };
@@ -225,7 +402,7 @@ export default function HealthAssistantsDashboard() {
     try {
       await vapi.stop();
     } catch (error) {
-      console.error("Failed to stop call:", error);
+      console.error("Error stopping call:", error);
       setLoadingStates((prev) => ({ ...prev, [assistantId]: false }));
     }
   };
@@ -234,6 +411,7 @@ export default function HealthAssistantsDashboard() {
     const IconComponent = assistant.icon;
     const isCallActive = callStates[assistant.id];
     const isLoading = loadingStates[assistant.id];
+    const isListening = listeningStates[assistant.id];
 
     return (
       <div
@@ -252,16 +430,25 @@ export default function HealthAssistantsDashboard() {
             {assistant.name}
           </h2>
 
-          {/* Description */}
           <p className="text-gray-300 mb-6 leading-relaxed text-sm">
             {assistant.description}
           </p>
 
           {/* Call Status Indicator */}
           {isCallActive && (
-            <div className="flex items-center gap-2 mb-4 text-green-400">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium">Call Active</span>
+            <div className="flex flex-col items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 text-green-400">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-sm font-medium">Call Active</span>
+              </div>
+
+              {/* Listening Status */}
+              {isListening && (
+                <div className="flex items-center gap-2 text-blue-400">
+                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-ping"></div>
+                  <span className="text-xs">🎤 Listening to you...</span>
+                </div>
+              )}
             </div>
           )}
 
@@ -308,11 +495,35 @@ export default function HealthAssistantsDashboard() {
             )}
           </div>
 
-          {/* Features List */}
+          {/* Voice Gender, Languages, and Features */}
           <div className="mt-6 text-left w-full">
+            {/* Voice Gender Badge */}
+            {assistant.voiceGender && (
+              <div className="flex items-center gap-2 mb-3 justify-center">
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    assistant.voiceGender === "Female"
+                      ? "bg-pink-900/50 text-pink-300 border border-pink-700"
+                      : "bg-blue-900/50 text-blue-300 border border-blue-700"
+                  }`}
+                >
+                  🎙️ {assistant.voiceGender} Voice
+                </span>
+              </div>
+            )}
+
+            {/* Languages */}
+            {assistant.languages && (
+              <p className="text-xs text-gray-400 mb-3 text-center">
+                {assistant.languages}
+              </p>
+            )}
+
             <p className="text-sm text-gray-400 mb-3 text-center">
               {assistant.name} can help with:
             </p>
+
+            {/* Features List */}
             <div className="grid grid-cols-2 gap-2 text-xs text-gray-300">
               {assistant.features.map((feature, index) => (
                 <div key={index} className="flex items-center gap-2">
@@ -339,7 +550,8 @@ export default function HealthAssistantsDashboard() {
         <p className="text-lg text-gray-300 max-w-4xl mx-auto leading-relaxed">
           Your comprehensive suite of AI-powered health companions, ready to
           provide personalized guidance, support, and expert knowledge across
-          various health domains - all through natural voice conversations.
+          various health domains - all through natural voice conversations in
+          your preferred language.
         </p>
       </div>
 

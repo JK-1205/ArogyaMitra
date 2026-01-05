@@ -1,16 +1,23 @@
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { SPECIALTIES } from "@/lib/specialities";
+import { VoiceAssistantCTA } from "./components/voice-assistant-cta";
 
 export default async function DoctorsPage() {
   return (
     <>
-      <div className="flex flex-col items-center justify-center mb-8 text-center">
+      {/* ✅ Voice Assistant CTA */}
+      <VoiceAssistantCTA />
+
+      {/* Page Heading */}
+      <div className="flex flex-col items-center justify-center mb-8 mt-8 text-center">
         <h1 className="text-3xl font-bold text-white mb-2">Find Your Doctor</h1>
         <p className="text-muted-foreground text-lg">
           Browse by specialty or view all available healthcare providers
         </p>
       </div>
+
+      {/* Specialties Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {SPECIALTIES.map((specialty) => (
           <Link key={specialty.name} href={`/doctors/${specialty.name}`}>

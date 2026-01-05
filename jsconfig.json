@@ -3,10 +3,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "types": ["react", "react-dom", "three"]
   },
-  "exclude": [
-    "node_modules",
-    "**/node_modules/*"
-  ]
+  "include": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
