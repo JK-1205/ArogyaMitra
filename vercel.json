@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "src/pages/**/*.js": {
+      "includeFiles": "node_modules/.prisma/client/**"
+    }
+  }
+}
