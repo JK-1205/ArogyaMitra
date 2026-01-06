@@ -19,25 +19,41 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider appearance={{ baseTheme: dark }}>
-      <html lang="en" suppressHydrationWarning>
-        <body className={inter.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  localStorage.setItem('theme', 'dark');
+                  localStorage.removeItem('color-schema');
+                  var s = document.createElement('style');
+                  s.innerHTML = 'html{color-scheme:dark!important}html.dark{background:#262626!important}';
+                  document.head.appendChild(s);
+                  document.documentElement.classList.add('dark');
+                  document.documentElement.style.colorScheme = 'dark';
+                } catch (e) {}
+              })()
+            `,
+          }}
+        />
+      </head>
+      <body className={`${inter.className} bg-background text-foreground`}>
+        <ThemeProvider
+          attribute="class"
+          forcedTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          <ClerkProvider appearance={{ baseTheme: dark }}>
             <Header />
-
             <main className="min-h-screen">{children}</main>
-
             <Footer />
-
             <Toaster richColors />
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+          </ClerkProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
