@@ -46,7 +46,14 @@ export default function RootLayout({ children }) {
           enableSystem={false}
           disableTransitionOnChange
         >
-          <ClerkProvider appearance={{ baseTheme: dark }}>
+          <ClerkProvider
+            appearance={{ baseTheme: dark }}
+            // Add these redirect configurations
+            afterSignInUrl="/"
+            afterSignUpUrl="/onboarding"
+            signInFallbackRedirectUrl="/"
+            signUpFallbackRedirectUrl="/onboarding"
+          >
             <Header />
             <main className="min-h-screen">{children}</main>
             <Footer />
